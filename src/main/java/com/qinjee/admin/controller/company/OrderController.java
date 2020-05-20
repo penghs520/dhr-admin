@@ -3,14 +3,13 @@ package com.qinjee.admin.controller.company;
 
 import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.Result;
-import com.qinjee.admin.model.ao.CompanyPageAo;
-import com.qinjee.admin.model.vo.CompanyListVo;
+import com.qinjee.admin.model.ao.OrderRecordPageAo;
+import com.qinjee.admin.model.vo.OrderRecordVo;
+import com.qinjee.admin.service.OrderRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -25,12 +24,25 @@ import org.springframework.web.bind.annotation.RestController;
 @Api(tags = "【企业管理|购买记录】")
 public class OrderController {
 
-    @ApiOperation(value = "购买记录")
-    @PostMapping(value = "/list")
-    public Result<PageResult<CompanyListVo>> list(@RequestBody CompanyPageAo companyPageAo) {
-        /*PageResult<CompanyListVo> list = companyInfoService.list(companyPageAo);
+    @Autowired
+    private OrderRecordService orderRecordService;
 
-        return Result.success(list);*/
+    @ApiOperation(value = "购买记录|发票列表")
+    @PostMapping(value = "/list")
+    public Result<PageResult<OrderRecordVo>> list(@RequestBody OrderRecordPageAo pageAo) {
+       PageResult<OrderRecordVo> list = orderRecordService.list(pageAo);
+
+        return Result.success(list);
+    }
+    @ApiOperation(value = "寄送发票")
+    @GetMapping(value = "/sendTicket")
+    public Result sendTicket(Integer ticketId,String expressNumber){
         return null;
     }
+    @ApiOperation(value = "确认开票")
+    @PostMapping(value = "/opneTicket")
+    public Result opneTicket(@RequestBody Integer[] ticketId){
+        return null;
+    }
+
 }

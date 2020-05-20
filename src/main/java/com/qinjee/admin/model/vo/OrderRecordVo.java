@@ -14,13 +14,22 @@ public class OrderRecordVo implements Serializable {
 
     private String ticketNumber;//发票号码
 
-    private Integer orderId;
+    private Date ticketOpenTime;
+
+    private Integer ticketOpenStatus;
+
+    private Integer ticketSendStatus;
+
+    private String expressNumber;
+
+    private String orderNumber;
 
     private String goodName;
 
-    private String payer_name;//付款方
 
     private String buyUserId;//下单人，对应订单表的operator_id
+
+    private String buyUserName;//下单人，对应订单表的operator_id
 
     private String phone;
 

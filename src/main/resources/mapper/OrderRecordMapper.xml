@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qinjee.admin.mapper.OrderRecordMapper">
+
+   <select id="selectPage" resultType="com.qinjee.admin.model.vo.OrderRecordVo">
+       SELECT tc.company_name,tc.create_time,order_number,good_name,total_price,pay_type,buy_date,go.operator_id buy_user_id,
+       tua.user_name buy_user_name,tua.phone,
+       CASE   WHEN ti.ticket_id IS NULL THEN 0 ELSE 1 END ticket_open_status,
+       ti.create_time ticket_open_time,
+       ti.express_number,
+       ti.ticket_number,
+       CASE WHEN ti.express_number IS NULL THEN 0 ELSE 1 END ticket_send_status
+       FROM t_good_order go
+       LEFT JOIN t_company_info tc ON tc.company_id =go.company_id
+       LEFT JOIN t_ticket ti ON ti.ticket_id =go.ticket_id
+       LEFT JOIN t_user_archive tua on go.operator_id = tua.archive_id
+
+
+   </select>
+</mapper>

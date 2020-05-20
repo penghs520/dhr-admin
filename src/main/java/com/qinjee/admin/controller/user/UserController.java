@@ -3,11 +3,11 @@ package com.qinjee.admin.controller.user;
 
 import com.qinjee.admin.config.redis.RedisClusterService;
 import com.qinjee.admin.controller.BaseController;
-import com.qinjee.admin.entity.user.User;
+import com.qinjee.admin.entity.User;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.ResultCode;
 import com.qinjee.admin.model.ao.UserAo;
-import com.qinjee.admin.service.user.IUserService;
+import com.qinjee.admin.service.IUserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;

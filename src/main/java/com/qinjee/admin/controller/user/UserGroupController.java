@@ -2,7 +2,7 @@ package com.qinjee.admin.controller.user;
 
 import com.qinjee.admin.controller.BaseController;
 import com.qinjee.admin.entity.SysMenu;
-import com.qinjee.admin.entity.user.UserGroup;
+import com.qinjee.admin.entity.UserGroup;
 import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.UserSession;
@@ -10,7 +10,7 @@ import com.qinjee.admin.model.ao.UserGroupAo;
 import com.qinjee.admin.model.ao.UserPageAo;
 import com.qinjee.admin.model.vo.UserGroupVo;
 import com.qinjee.admin.model.vo.UserUnderGroupVo;
-import com.qinjee.admin.service.user.IUserGroupService;
+import com.qinjee.admin.service.IUserGroupService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

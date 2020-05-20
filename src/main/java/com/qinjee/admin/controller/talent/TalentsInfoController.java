@@ -5,7 +5,7 @@ import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.ao.TalentInfoPageAo;
 import com.qinjee.admin.model.vo.TalentInfoVo;
-import com.qinjee.admin.service.talent.ITalentInfoService;
+import com.qinjee.admin.service.ITalentInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

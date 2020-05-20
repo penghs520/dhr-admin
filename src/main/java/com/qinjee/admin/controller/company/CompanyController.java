@@ -9,13 +9,11 @@ import com.qinjee.admin.model.ao.CompanyFollowerAo;
 import com.qinjee.admin.model.ao.CompanyPageAo;
 import com.qinjee.admin.model.vo.CompanyInfoVo;
 import com.qinjee.admin.model.vo.CompanyListVo;
-import com.qinjee.admin.service.company.ICompanyInfoService;
+import com.qinjee.admin.service.ICompanyInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * <p>
@@ -61,7 +59,11 @@ public class CompanyController extends BaseController {
     @ApiOperation(value = "添加跟进人")
     @PostMapping(value = "/addFollower")
     public Result addFollower(@RequestBody CompanyFollowerAo companyFollowerAo) {
-        return null;
+        Boolean bool=companyInfoService.addFollower(companyFollowerAo);
+        if (bool){
+            return Result.success();
+        }
+        return Result.fail();
     }
 
 
