@@ -8,26 +8,74 @@
         left join t_company_info tc on tua.company_id = tc.company_id
         <where>
             tua.is_delete = 0
-        <if test="query != null">
-            <if test="query.companyName != null">
-                and tc.company_name like CONCAT(CONCAT('%', #{query.companyName}), '%')
+            <if test="query != null">
+                <if test="query.companyName != null">
+                    <choose>
+                        <when test="query.companyName == ''">
+                            and (tc.company_name = '' or tc.company_name is null)
+                        </when>
+                        <otherwise>
+                            and tc.company_name like CONCAT(CONCAT('%', #{query.companyName}), '%')
+                        </otherwise>
+                    </choose>
+                </if>
+
+                <if test="query.email != null">
+                    <choose>
+                        <when test="query.email == ''">
+                            and (tua.email = '' or tua.email is null)
+                        </when>
+                        <otherwise>
+                            and tua.email =#{query.email}
+                        </otherwise>
+                    </choose>
+
+                </if>
+                <if test="query.phone != null">
+                    <choose>
+                        <when test="query.phone == ''">
+                            and (tua.phone = '' or tua.phone is null)
+                        </when>
+                        <otherwise>
+                            and tua.phone =#{query.phone}
+                        </otherwise>
+                    </choose>
+
+                </if>
+                <if test="query.gender != null">
+                    <choose>
+                        <when test="query.gender == ''">
+                            and (tua.gender = '' or tua.gender is null)
+                        </when>
+                        <otherwise>
+                            and tua.gender =#{query.gender}
+                        </otherwise>
+                    </choose>
+
+                </if>
+                <if test="query.userName != null">
+                    <choose>
+                        <when test="query.userName == ''">
+                            and (tua.user_name = '' or tua.user_name is null)
+                        </when>
+                        <otherwise>
+                            and tua.user_name like CONCAT(CONCAT('%', #{query.userName}), '%')
+                        </otherwise>
+                    </choose>
+
+                </if>
+                <if test="query.archiveId != null">
+                    <choose>
+                        <when test="query.archiveId == ''">
+                            and (tua.archive_id = '' or tua.archive_id is null)
+                        </when>
+                        <otherwise>
+                            and tua.archive_id =#{query.archiveId}
+                        </otherwise>
+                    </choose>
+
+                </if>
             </if>
-            <if test="query.email != null">
-                and tua.email =#{query.email}
-            </if>
-            <if test="query.phone != null">
-                and tua.phone =#{query.phone}
-            </if>
-            <if test="query.gender != null">
-                and tua.gender =#{query.gender}
-            </if>
-            <if test="query.userName != null">
-                and tua.user_name like CONCAT(CONCAT('%', #{query.userName}), '%')
-            </if>
-            <if test="query.archiveId != null">
-                and tua.archive_id =#{query.archiveId}
-            </if>
-        </if>
         </where>
         order by tua.create_time DESC
     </select>

@@ -37,16 +37,6 @@ public class OrderRecordVo implements Serializable {
 
     private Double totalPrice;
 
-    private Integer ticket_status;//开票状态
-
-
-
-
-
-
-
-
-
 
 
 

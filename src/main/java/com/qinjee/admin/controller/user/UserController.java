@@ -4,6 +4,7 @@ package com.qinjee.admin.controller.user;
 import com.qinjee.admin.config.redis.RedisClusterService;
 import com.qinjee.admin.controller.BaseController;
 import com.qinjee.admin.entity.User;
+import com.qinjee.admin.entity.UserGroup;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.ResultCode;
 import com.qinjee.admin.model.ao.UserAo;
@@ -13,6 +14,8 @@ import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -135,4 +138,13 @@ public class UserController extends BaseController {
         }
         return Result.fail();
     }
+
+    @ApiOperation(value = "查询所有用户")
+    @GetMapping(value = "/getAllUser")
+    public Result<List<UserGroup>> getAllUser(){
+        List<UserGroup> userTree=userService.getUserTree();
+        return Result.success(userTree);
+    }
+
+
 }

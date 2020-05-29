@@ -3,6 +3,7 @@ package com.qinjee.admin.controller.message;
 import com.qinjee.admin.config.redis.RedisClusterService;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.ResultCode;
+import com.qinjee.admin.service.SmsRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
@@ -19,31 +20,29 @@ public class SmsController {
     @Autowired
     private RedisClusterService redisClusterService;
 
+    @Autowired
+    private SmsRecordService smsRecordService;
+
     @ApiOperation(value = "发送登录验证码")
     @GetMapping(value = "/sendLoginCode")
     public Result sendLoginCode(String phone) {
-        String smsCode = "1234";
-        String smsMsg = "您的勤杰账号正在执行登录操作，短信验证码为：" + smsCode + "，一分钟之内有效。[勤杰软件]";
-        redisClusterService.setex("LOGIN_" + phone, 60, smsCode);
-        return Result.success(smsMsg);
+        //TODO 异步发送短信 后面采用线程池代替
+        smsRecordService.sendLoginCode(phone);
+        return Result.result(200, "已发送");
     }
 
     @ApiOperation(value = "发送修改密码验证码")
     @GetMapping(value = "/sendUpdatePwdCode")
     public Result sendUpdatePwdCode(String phone) {
-        String smsCode = "1234";
-        String smsMsg = "您的勤杰账号正在执行修改密码操作，短信验证码为：" + smsCode + "，一分钟之内有效。[勤杰软件]";
-        redisClusterService.setex("UPDATE_PWD_" + phone, 60, smsCode);
-        return Result.success(smsMsg);
+        smsRecordService.sendUpdatePwdCode(phone);
+        return Result.result(200, "已发送");
     }
 
     @ApiOperation(value = "发送修改绑定手机验证码")
     @GetMapping(value = "/sendUpdatePhoneCode")
     public Result sendUpdatePhoneCode(String phone) {
-        String smsCode = "1234";
-        String smsMsg = "您的勤杰账号正在执行修改绑定手机操作，短信验证码为：" + smsCode + "，一分钟之内有效。[勤杰软件]";
-        redisClusterService.setex("UPDATE_PHONE_" + phone, 60, smsCode);
-        return Result.success(smsMsg);
+        smsRecordService.sendUpdatePhoneCode(phone);
+        return Result.result(200, "已发送");
     }
 
     @ApiOperation(value = "【校验】修改绑定手机验证码")
@@ -67,6 +66,7 @@ public class SmsController {
         redisClusterService.del(key);
         return Result.success();
     }
+
     @ApiOperation(value = "【校验】修改密码验证码")
     @GetMapping(value = "/checkUpdatePwdCode")
     public Result checkUpdatePwdCode(String phone, String smsCode) {

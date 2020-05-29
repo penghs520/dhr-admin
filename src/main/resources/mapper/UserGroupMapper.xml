@@ -67,16 +67,45 @@
         <where>
             <if test="query != null">
                 <if test="query.email != null">
-                    and u.email like concat('%',#{query.email},'%')
+                    <choose>
+                        <when test="query.email == ''">
+                            and (u.email = '' or u.email is null)
+                        </when>
+                        <otherwise>
+                            and u.email like concat('%',#{query.email},'%')
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.phone != null">
-                    and u.phone like concat('%',#{query.phone},'%')
+                    <choose>
+                        <when test="query.email == ''">
+                            and (u.phone = '' or u.phone is null)
+                        </when>
+                        <otherwise>
+                            and u.phone like concat('%',#{query.phone},'%')
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.userGroupId != null">
-                    and u.user_group_id = #{query.userGroupId}
+                    <choose>
+                        <when test="query.userGroupId == ''">
+                            and (u.user_group_id = '' or u.user_group_id is null)
+                        </when>
+                        <otherwise>
+                            and u.user_group_id = #{query.userGroupId}
+                        </otherwise>
+                    </choose>
+
                 </if>
                 <if test="query.userName != null">
-                    and u.user_name like concat('%',#{query.userName},'%')
+                    <choose>
+                        <when test="query.userName == ''">
+                            and (u.user_name = '' or u.user_name is null)
+                        </when>
+                        <otherwise>
+                            and u.user_name like concat('%',#{query.userName},'%')
+                        </otherwise>
+                    </choose>
                 </if>
             </if>
         </where>

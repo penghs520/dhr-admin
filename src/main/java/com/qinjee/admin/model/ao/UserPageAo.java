@@ -15,12 +15,12 @@ public class UserPageAo implements Serializable {
     private Integer pageSize;
 
 
-    private Query query;
+    private UserPageQuery query;
 
     @Data
-    private class Query{
+    private class UserPageQuery{
         @ApiModelProperty(notes = "所属分组id", example = "1")
-        private Integer userGroupId;
+        private String userGroupId;
 
         @ApiModelProperty(notes = "姓名", example = "张三")
         private String userName;

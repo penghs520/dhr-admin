@@ -2,6 +2,8 @@ package com.qinjee.admin.service.impl;
 
 import com.qinjee.admin.config.redis.RedisClusterService;
 import com.qinjee.admin.entity.User;
+import com.qinjee.admin.entity.UserGroup;
+import com.qinjee.admin.mapper.UserGroupMapper;
 import com.qinjee.admin.mapper.UserMapper;
 import com.qinjee.admin.model.UserSession;
 import com.qinjee.admin.model.ao.UserAo;
@@ -11,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * <p>
@@ -22,6 +25,9 @@ import javax.annotation.Resource;
  */
 @Service
 public class UserServiceImpl implements IUserService {
+
+    @Resource
+    private UserGroupMapper userGroupMapper;
 
     @Resource
     private UserMapper userMapper;
@@ -109,5 +115,18 @@ public class UserServiceImpl implements IUserService {
         user.setPhone(phone);
         user.setPassword(password);
         return userMapper.selectByUser(user);
+    }
+
+    @Override
+    public List<UserGroup> getUserTree() {
+
+        List<UserGroup> userGroups = userGroupMapper.list();
+        for (UserGroup userGroup : userGroups) {
+            User user=new User();
+            user.setUserGroupId(userGroup.getUserGroupId());
+            List<User> users = userMapper.listByUser(user);
+            userGroup.setUsers(users);
+        }
+        return userGroups;
     }
 }

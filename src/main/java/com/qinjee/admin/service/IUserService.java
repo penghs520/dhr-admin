@@ -1,8 +1,11 @@
 package com.qinjee.admin.service;
 
 import com.qinjee.admin.entity.User;
+import com.qinjee.admin.entity.UserGroup;
 import com.qinjee.admin.model.UserSession;
 import com.qinjee.admin.model.ao.UserAo;
+
+import java.util.List;
 
 /**
  * <p>
@@ -29,4 +32,7 @@ public interface IUserService  {
     Boolean updateById(UserAo userAo);
 
     User getUserByPhoneAndPassword(String phone, String password);
+
+    List<UserGroup> getUserTree();
+
 }

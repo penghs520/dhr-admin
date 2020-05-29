@@ -1,10 +1,13 @@
 package com.qinjee.admin.entity;
 
+import com.qinjee.admin.model.vo.UserInfoVo;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -26,6 +29,8 @@ public class UserGroup implements Serializable {
     private String userGroupName;
 
     private Integer sort;
+
+    private List<User> users =new ArrayList<>();
 
 
 }

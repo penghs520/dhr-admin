@@ -8,6 +8,8 @@
         <result column="user_scale" property="userScale"></result>
         <result column="regist_user_name" property="registUserName"></result>
         <result column="regist_user_id" property="registUserId"></result>
+        <result column="invUserName" property="invUserName"></result>
+        <result column="invPhone" property="invPhone"></result>
         <result column="regist_user_phone" property="registUserPhone"></result>
         <result column="create_time" property="createTime"></result>
         <result column="company_type" property="companyType"></result>
@@ -16,47 +18,138 @@
         <result column="version" property="version"></result>
         <result column="regist_address" property="registAddress"></result>
         <result column="auth_status" property="authStatus"></result>
+        <collection property="followers" ofType="com.qinjee.admin.model.vo.UserInfoVo">
+            <result column="followerId" property="userId"></result>
+            <result column="followerName" property="userName"></result>
+        </collection>
 
     </resultMap>
 
     <select id="selectPage" resultMap="pageCompanyMap">
         select tc.company_id,tc.company_name,tc.version,tc.create_time,
-        tc.user_id regist_user_id, tu.user_name regist_user_name,tu.phone regist_user_phone ,
+        tc.user_id regist_user_id, tu.user_name regist_user_name,tu.phone regist_user_phone ,tu2.user_name invUserName,tu2.phone invPhone,
         tc.company_type,tc.user_scale,
-        tc.account_count,tc.regist_address,tc.auth_status
-        from t_company_info tc left join t_user_info tu
-        on tu.user_id = tc.user_id
+        tc.account_count,tc.regist_address,tc.auth_status,
+        tau.user_id followerId,
+        tau.user_name followerName
+        from t_company_info tc left join t_user_info tu on tu.user_id = tc.user_id
+        left join  t_user_info tu2
+        on tu2.user_id = tc.inv_user_id
+        left join t_admin_company_follower tf on tf.company_id = tc.company_id
+        left join t_admin_user tau on tau.user_id=tf.user_id
+
         <where>
             <if test="query != null">
                 <if test="query.companyName != null ">
-                    and tc.company_name like concat('%',#{query.companyName},'%')
+                    <choose>
+                        <when test="query.companyName == ''">
+                            and (tc.company_name = '' or tc.company_name is null)
+                        </when>
+                        <otherwise>
+                            and tc.company_name like concat('%',#{query.companyName},'%')
+                        </otherwise>
+                    </choose>
                 </if>
-                <if test="query.version != null">
-                    and tc.version = #{query.version}
-                </if>
+
                 <if test="query.companyType != null">
-                    and tc.company_type = #{query.companyType}
+                    <choose>
+                        <when test="query.companyType == ''">
+                            and (tc.company_type = '' or tc.company_type is null)
+                        </when>
+                        <otherwise>
+                            and tc.company_type = #{query.companyType}
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.registUserName != null ">
-                    and tu.user_name like concat('%',#{query.registUserName},'%')
+                    <choose>
+                        <when test="query.registUserName == ''">
+                            and (tu.user_name = '' or tu.user_name is null)
+                        </when>
+                        <otherwise>
+                            and tu.user_name like concat('%',#{query.registUserName},'%')
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.registAddress != null ">
-                    and tu.regist_address like concat('%',#{query.registAddress},'%')
+                    <choose>
+                        <when test="query.registAddress == ''">
+                            and (tc.regist_address = '' or tc.regist_address is null)
+                        </when>
+                        <otherwise>
+                            and tc.regist_address like concat('%',#{query.registAddress},'%')
+                        </otherwise>
+                    </choose>
                 </if>
-                <if test="query.staffCount != null">
-                    and tc.staff_count = #{query.staffCount}
+                <if test="query.staffCount_1 != null">
+                    <choose>
+                        <when test="query.staffCount_1 == ''">
+                            and (tc.staff_count = '' or tc.staff_count is null)
+                        </when>
+                        <otherwise>
+                            and tc.staff_count >= #{query.staffCount_1}
+                        </otherwise>
+                    </choose>
                 </if>
-                <if test="query.accountCount != null   ">
-                    and tc.account_count = #{query.accountCount}
+                <if test="query.staffCount_2 != null">
+                    <choose>
+                        <when test="query.staffCount_2 == ''">
+                            and (tc.staff_count = '' or tc.staff_count is null)
+                        </when>
+                        <otherwise>
+                            and #{query.staffCount_2} >= tc.staff_count
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="query.accountCount_1 != null   ">
+                    <choose>
+                        <when test="query.accountCount_1 == ''">
+                            and (tc.account_count = '' or tc.account_count is null)
+                        </when>
+                        <otherwise>
+                            and tc.account_count >= #{query.accountCount_1}
+                        </otherwise>
+                    </choose>
+                </if>
+                <if test="query.accountCount_2 != null   ">
+                    <choose>
+                        <when test="query.accountCount_2 == ''">
+                            and (tc.account_count = '' or tc.account_count is null)
+                        </when>
+                        <otherwise>
+                            and #{query.accountCount_2} > tc.account_count
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.authStatus != null  ">
-                    and tc.auth_status = #{query.authStatus}
+                    <choose>
+                        <when test="query.authStatus == ''">
+                            and (tc.auth_status = '' or tc.auth_status is null)
+                        </when>
+                        <otherwise>
+                            and tc.auth_status = #{query.authStatus}
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.createTime_1 != null">
-                    and tc.create_time >= #{query.createTime_1}
+                    <choose>
+                        <when test="query.createTime_1 == ''">
+                            and (tc.create_time = '' or tc.create_time is null)
+                        </when>
+                        <otherwise>
+                            and tc.create_time >= #{query.createTime_1}
+                        </otherwise>
+                    </choose>
                 </if>
                 <if test="query.createTime_2 != null">
-                    and #{query.createTime_2} >= tc.create_time
+                    <choose>
+                        <when test="query.createTime_2 == ''">
+                            and (tc.create_time = '' or tc.create_time is null)
+                        </when>
+                        <otherwise>
+                            and #{query.createTime_2} >= tc.create_time
+                        </otherwise>
+                    </choose>
                 </if>
             </if>
         </where>
@@ -81,7 +174,7 @@
     <select id="selectFollowers" resultType="com.qinjee.admin.model.vo.UserInfoVo">
         select u.user_id,u.user_name
         from user u
-        left join user_company uc
+        left join t_admin_company_follower uc
         on u.user_id =uc.user_id
         where uc.company_id =#{companyId}
     </select>
@@ -102,7 +195,7 @@
 
     <delete id="deleteFollower">
         <if test="companyIds != null and companyIds.size >0 ">
-            delete from user_company
+            delete from t_admin_company_follower
             where company_id in
             <foreach collection="companyIds" item="id" separator="," close=")" open="(">
                 #{id}
@@ -111,7 +204,7 @@
         </if>
     </delete>
     <insert id="addFollower">
-        insert user_company(user_id,company_id)
+        insert t_admin_company_follower(user_id,company_id)
         values(#{followerId},#{companyId})
     </insert>
 

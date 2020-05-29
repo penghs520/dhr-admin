@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -19,7 +20,6 @@ public class CompanyListVo implements Serializable {
     /**
      * 版本：trial/official
      */
-    @ApiModelProperty("版本：trial（试用版）/official（正式版）")
     private String version;
 
     /**
@@ -60,7 +60,7 @@ public class CompanyListVo implements Serializable {
      * 跟进人
      */
     @ApiModelProperty("跟进人")
-    private List<UserInfoVo> followers;
+    private List<UserInfoVo> followers=new ArrayList<>();
 
     /**
      * 管理员账号数
@@ -89,10 +89,14 @@ public class CompanyListVo implements Serializable {
     private String registAddress;
 
     /**
-     * 认证状态 0 未认证 1 认证中 2 已认证 3 认证失败
+     * 认证状态 0 未认证 1 认证中 2 认证失败
      */
-    @ApiModelProperty("认证状态，0 未认证 1 认证中 2 已认证 3 认证失败")
+    @ApiModelProperty("认证状态，0 未认证  1 已认证 2 认证失败")
     private Integer authStatus;
 
+    @ApiModelProperty("推荐人")
+    private String invUserName;
 
+    @ApiModelProperty("推荐人手机号")
+    private String invPhone;
 }

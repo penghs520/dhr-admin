@@ -16,6 +16,10 @@ spring:
 logging:
   level:
     com.qinjee.admin.mapper: debug
+  pattern:
+    dateformat: yyyy-MM-dd hh:mm:ss
+  file:
+    name: dhr-admin.log
 
 pagehelper:
   helperDialect: mysql  #数据库

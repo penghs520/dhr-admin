@@ -14,7 +14,176 @@
        LEFT JOIN t_company_info tc ON tc.company_id =go.company_id
        LEFT JOIN t_ticket ti ON ti.ticket_id =go.ticket_id
        LEFT JOIN t_user_archive tua on go.operator_id = tua.archive_id
+       <where>
+           <if test="query != null">
+               <if test="query.companyName != null ">
+                   <choose>
+                       <when test="query.companyName == ''">
+                           and (tc.company_name = '' or  tc.company_name is null)
+                       </when>
+                       <otherwise>
+                           and tc.company_name like concat('%',#{query.companyName},'%')
+                       </otherwise>
+                   </choose>
+               </if>
 
+               <if test="query.buyDate_1 != null">
+                   <choose>
+                       <when test="query.buyDate_1 == ''">
+                           and (buy_date = '' or and buy_date is null)
+                       </when>
+                       <otherwise>
+                           and buy_date >= #{query.buyDate_1}
+                       </otherwise>
+                   </choose>
+               </if>
+               <if test="query.buyDate_2 != null">
+                   <choose>
+                       <when test="query.buyDate_2 == ''">
+                           and (buy_date = '' or and buy_date is null)
+                       </when>
+                       <otherwise>
+                           and #{query.buyDate_1} >= buy_date
+                       </otherwise>
+                   </choose>
+               </if>
+               <if test="query.buyUserName != null">
+                   <choose>
+                       <when test="query.buyUserName == ''">
+                           and (tua.user_name = '' or  tua.user_name is null)
+                       </when>
+                       <otherwise>
+                           and tua.user_name like concat('%',#{query.buyUserName},'%')
+                       </otherwise>
+                   </choose>
+               </if>
+               <if test="query.expressNumber != null">
+                   <choose>
+                       <when test="query.expressNumber == ''">
+                           and (ti.express_number = '' or  ti.express_number is null)
+                       </when>
+                       <otherwise>
+                           and ti.express_number = #{query.expressNumber}
+                       </otherwise>
+                   </choose>
+               </if>
+               <if test="query.orderNumber != null">
+                   <choose>
+                       <when test="query.orderNumber == ''">
+                           and (order_number = '' or  order_number is null)
+                       </when>
+                       <otherwise>
+                           and order_number =#{query.orderNumber}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.payType != null">
+                   <choose>
+                       <when test="query.payType == ''">
+                           and (pay_type = '' or  pay_type is null)
+                       </when>
+                       <otherwise>
+                           and pay_type = #{query.payType}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.phone != null">
+                   <choose>
+                       <when test="query.phone == ''">
+                           and (tua.phone = '' or  tua.phone is null)
+                       </when>
+                       <otherwise>
+                           and tua.phone = #{query.phone}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.ticketNumber != null">
+                   <choose>
+                       <when test="query.ticketNumber == ''">
+                           and (ti.ticket_number = '' or  ti.ticket_number is null)
+                       </when>
+                       <otherwise>
+                           and ti.ticket_number = #{query.ticketNumber}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.ticketOpenDate_1 != null ">
+                   <choose>
+                       <when test="query.ticketOpenDate_1 == ''">
+                           and (ti.create_time = '' or  ti.create_time is null)
+                       </when>
+                       <otherwise>
+                           and ti.create_time >= #{query.ticketOpenDate_1}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.ticketOpenDate_2 != null">
+                   <choose>
+                       <when test="query.ticketOpenDate_2 == ''">
+                           and (ti.create_time = '' or  ti.create_time is null)
+                       </when>
+                       <otherwise>
+                           and  #{query.ticketOpenDate_1} >= ti.create_time
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.ticketOpenStatus != null  ">
+                   <choose>
+                       <when test="query.companyName == ''">
+                           and ti.ticket_id IS  NULL
+                       </when>
+                       <otherwise>
+                           <if test="query.ticketOpenStatus == 1">
+                               and ti.ticket_id IS NOT NULL
+                           </if>
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.ticketSendStatus != null ">
+                   <choose>
+                       <when test="query.companyName == ''">
+                           and ti.express_number is null
+                       </when>
+                       <otherwise>
+                           <if test="query.ticketSendStatus == 1">
+                               and ti.express_number IS NOT NULL
+                           </if>
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.totalPrice_1 != null">
+                   <choose>
+                       <when test="query.totalPrice_1 == ''">
+                           and ( total_price = '' or  total_price is null)
+                       </when>
+                       <otherwise>
+                           and total_price >= #{query.totalPrice_2}
+                       </otherwise>
+                   </choose>
+
+               </if>
+               <if test="query.totalPrice_2 != null">
+                   <choose>
+                       <when test="query.totalPrice_2 == ''">
+                           and (total_price = '' or total_price is null)
+                       </when>
+                       <otherwise>
+                           and #{query.totalPrice_2} >= total_price
+                       </otherwise>
+                   </choose>
+
+               </if>
+
+           </if>
+       </where>
 
    </select>
 </mapper>

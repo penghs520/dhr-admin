@@ -15,10 +15,10 @@ public class TalentInfoPageAo implements Serializable {
     private Integer pageSize;
 
     @ApiModelProperty(notes = "查询条件对象")
-    private Query2 query;
+    private TalentInfoPageQuery query;
 
     @Data
-    private class Query2{//TODO 内部类名字不能一样，我醉了
+    private class TalentInfoPageQuery{//TODO 内部类名字不能一样，我醉了
         @ApiModelProperty(notes = "企业名称")
         private String companyName;
 

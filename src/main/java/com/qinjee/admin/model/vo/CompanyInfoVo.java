@@ -56,7 +56,7 @@ public class CompanyInfoVo implements Serializable {
     /**
      * 认证状态 0 未认证 1 认证中 2 已认证 3 认证失败
      */
-    @ApiModelProperty("认证状态，0 未认证 1 认证中 2 已认证 3 认证失败")
+    @ApiModelProperty("认证状态，0 未认证  1 已认证 2 认证失败")
     private Integer authStatus;
 
     /**
