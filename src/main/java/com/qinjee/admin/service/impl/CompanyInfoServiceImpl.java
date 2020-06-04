@@ -78,6 +78,7 @@ public class CompanyInfoServiceImpl implements ICompanyInfoService {
         return i > 0 ? true : false;
     }
 
+
     @Override
     @Transactional
     public Boolean addFollower(CompanyFollowerAo companyFollowerAo) {

@@ -43,6 +43,17 @@ public class UserGroupServiceImpl implements IUserGroupService {
     public List<SysMenu> getMenus(Integer userId) {
         List<SysMenu> menus = userGroupMapper.selectMenus(userId);
         List<SysMenu> menuTree = buildMenuTree(menus);
+        for (SysMenu sysMenu : menuTree) {//如果父菜单没权限，但是子菜单有权限的话，也将父菜单的hasRole设置为1，仅仅为了前端展示。这里暂只支持两层菜单
+            if(sysMenu.getHasRole() == 0){
+                List<SysMenu> childMenus = sysMenu.getChildMenus();
+                for (SysMenu childMenu : childMenus) {
+                    if(childMenu.getHasRole() == 1){
+                        sysMenu.setHasRole(Short.valueOf("1"));
+                        break;
+                    }
+                }
+            }
+        }
         return menuTree;
     }
 
@@ -173,9 +184,9 @@ public class UserGroupServiceImpl implements IUserGroupService {
     @Override
     public UserGroupVo getUserGroupById(Integer userGroupId) {
         List<SysMenu> menus =userGroupMapper.selectMenusByGroupId(userGroupId);
-        List<SysMenu> menuTree = buildMenuTree(menus);
+        //List<SysMenu> menuTree = buildMenuTree(menus); 根据前端要求，只返回有权限的菜单。菜单不包含模块
         UserGroupVo userGroup = userGroupMapper.selectById(userGroupId);
-        userGroup.setMenus(menuTree);
+        userGroup.setMenus(menus);
         return userGroup;
     }
 }

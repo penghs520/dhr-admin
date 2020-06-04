@@ -25,6 +25,8 @@ public class CompanyInfoVo implements Serializable {
 
     private String createTime;
 
+    private String applyAuthTime;
+
     private String companyType;
 
     private Integer userScale;

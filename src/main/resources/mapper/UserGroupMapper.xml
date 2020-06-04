@@ -18,21 +18,20 @@
     </insert>
 
     <select id="selectMenus" resultMap="menuMap">
-        SELECT m.menu_id,m.menu_name,m.menu_code,m.func_type,m.parent_id,m.sort,
-        CASE WHEN u.user_group_id = ugm.user_group_id THEN 1 ELSE 0 END has_role
-        FROM t_admin_sys_menu m
-        LEFT JOIN t_admin_user_group_menu ugm ON m.menu_id = ugm.menu_id
-        LEFT JOIN t_admin_user u ON u.user_group_id = ugm.user_group_id
-        AND u.user_id =#{userId}
+        SELECT distinct m.menu_id,m.menu_name,m.menu_code,m.func_type,m.parent_id,m.sort,
+        CASE WHEN ugm.user_group_id IS NOT NULL THEN 1 ELSE 0 END has_role
+        FROM
+        t_admin_sys_menu m
+        LEFT JOIN t_admin_user_group_menu ugm
+        ON m.menu_id = ugm.menu_id AND ugm.user_group_id IN(SELECT user_group_id FROM t_admin_user WHERE user_id=#{userId})
         order by m.sort
     </select>
 
     <select id="selectMenusByGroupId" resultMap="menuMap">
-        SELECT m.menu_id,m.menu_name,m.menu_code,m.func_type,m.parent_id,m.sort,
-        CASE WHEN ugm.user_group_id = ugm.user_group_id THEN 1 ELSE 0 END has_role
+        SELECT m.menu_id,m.menu_name,m.menu_code,m.func_type,m.parent_id,m.sort
         FROM t_admin_sys_menu m
-        LEFT JOIN t_admin_user_group_menu ugm ON m.menu_id = ugm.menu_id
-        AND ugm.user_group_id =1
+        , t_admin_user_group_menu ugm where m.menu_id = ugm.menu_id
+        AND ugm.user_group_id =#{userGroupId}
         ORDER BY m.sort
     </select>
 

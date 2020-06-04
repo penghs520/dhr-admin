@@ -173,7 +173,7 @@
 
     <select id="selectFollowers" resultType="com.qinjee.admin.model.vo.UserInfoVo">
         select u.user_id,u.user_name
-        from user u
+        from t_admin_user u
         left join t_admin_company_follower uc
         on u.user_id =uc.user_id
         where uc.company_id =#{companyId}
