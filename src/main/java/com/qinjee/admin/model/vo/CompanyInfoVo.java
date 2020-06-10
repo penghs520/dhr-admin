@@ -11,6 +11,8 @@ public class CompanyInfoVo implements Serializable {
 
     private String companyName;
 
+    private String registCompanyName;
+
     private String registUserName;
 
     private String authenticator;

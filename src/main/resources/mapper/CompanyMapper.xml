@@ -158,6 +158,7 @@
 
     <select id="selectById" resultType="com.qinjee.admin.model.vo.CompanyInfoVo">
         select tc.company_name,tc.version,tc.create_time,
+        tc.regist_company_name,
         tc.user_id regist_user_id, tu.user_name regist_user_name,tu.phone regist_user_phone ,
         tc.company_type,tc.user_scale,
         tc.business_license_url,
@@ -188,8 +189,10 @@
             <if test="authStatus != null">
                 ,auth_status =#{authStatus}
             </if>
+            <if test="companyName != null">
+                ,company_name =#{companyName}
+            </if>
         </set>
-
         WHERE company_id =#{companyId}
     </update>
 
@@ -200,9 +203,9 @@
             <foreach collection="companyIds" item="id" separator="," close=")" open="(">
                 #{id}
             </foreach>
-
         </if>
     </delete>
+
     <insert id="addFollower">
         insert t_admin_company_follower(user_id,company_id)
         values(#{followerId},#{companyId})

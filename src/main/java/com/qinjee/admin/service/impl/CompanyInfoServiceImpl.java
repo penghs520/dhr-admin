@@ -5,14 +5,17 @@ import com.github.pagehelper.PageInfo;
 import com.qinjee.admin.entity.Company;
 import com.qinjee.admin.entity.User;
 import com.qinjee.admin.mapper.CompanyMapper;
+import com.qinjee.admin.mapper.OrganizationMapper;
 import com.qinjee.admin.mapper.UserMapper;
 import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.ao.CompanyFollowerAo;
 import com.qinjee.admin.model.ao.CompanyPageAo;
 import com.qinjee.admin.model.vo.CompanyInfoVo;
 import com.qinjee.admin.model.vo.CompanyListVo;
+import com.qinjee.admin.model.vo.OrganizationVo;
 import com.qinjee.admin.model.vo.UserInfoVo;
 import com.qinjee.admin.service.ICompanyInfoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +38,9 @@ public class CompanyInfoServiceImpl implements ICompanyInfoService {
 
     @Resource
     private UserMapper userMapper;
+
+    @Autowired
+    private OrganizationMapper organizationMapper;
 
     @Override
     public PageResult<CompanyListVo> list(CompanyPageAo pageAo) {
@@ -69,12 +75,34 @@ public class CompanyInfoServiceImpl implements ICompanyInfoService {
     }
 
     @Override
+    public CompanyInfoVo getById(Integer companyId) {
+        return companyMapper.selectById(companyId);
+    }
+
+    @Override
+    @Transactional
     public Boolean authenticate(Integer companyId, Integer authStatus, Integer operatorId) {
+        CompanyInfoVo companyInfoVo = companyMapper.selectById(companyId);
         Company company = new Company();
+
         company.setAuthenticatorId(operatorId);
         company.setAuthStatus(authStatus);
         company.setCompanyId(companyId);
+        //当通过认证时，同步设置机构名称和企业名称
+        if(authStatus==2){
+
+            company.setCompanyName(companyInfoVo.getRegistCompanyName());
+
+            OrganizationVo topOrganization = organizationMapper.getTop(companyId);
+            topOrganization.setOrgName(companyInfoVo.getRegistCompanyName());
+            organizationMapper.update(topOrganization);
+        }
+
+
         int i = companyMapper.updateById(company);
+
+
+
         return i > 0 ? true : false;
     }
 

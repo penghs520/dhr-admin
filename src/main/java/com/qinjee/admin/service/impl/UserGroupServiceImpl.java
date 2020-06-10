@@ -174,10 +174,10 @@ public class UserGroupServiceImpl implements IUserGroupService {
             PageHelper.startPage(pageAo.getCurrentPage(), pageAo.getPageSize());
         }
         List<UserUnderGroupVo> userList= userGroupMapper.selectUserPage(pageAo);
-        PageInfo<UserUnderGroupVo> pageInfo = new PageInfo<>(userList);
-        PageResult<UserUnderGroupVo> pageResult = new PageResult<>();
-        pageResult.setTotal(pageInfo.getTotal());
-        pageResult.setList(userList);
+        //PageInfo<UserUnderGroupVo> pageInfo = new PageInfo<>(userList);
+        PageResult<UserUnderGroupVo> pageResult = new PageResult<>(userList);
+       // pageResult.setTotal(pageInfo.getTotal());
+       // pageResult.setList(userList);
         return pageResult;
     }
 

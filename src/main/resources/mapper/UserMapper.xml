@@ -37,13 +37,26 @@
 
     <update id="updateById">
         update t_admin_user
-        set
-        <if test="password !=null and password != ''">
-            password = #{password}
-        </if>
-        <if test="phone !=null and phone != ''">
-            phone = #{phone}
-        </if>
+        <set>
+            <if test="userName !=null and userName != ''">
+                 ,user_name = #{userName}
+            </if>
+            <if test="password !=null and password != ''">
+                 ,password = #{password}
+            </if>
+            <if test="phone !=null and phone != ''">
+                 ,phone = #{phone}
+            </if>
+
+            <if test="userNo !=null and userNo != ''">
+                 ,user_no = #{userNo}
+            </if>
+            <if test="email !=null and email != ''">
+                 ,email = #{email}
+            </if>
+        </set>
+        where user_id =#{userId}
+
     </update>
 
     <delete id="deleteById">

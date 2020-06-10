@@ -132,6 +132,12 @@ public class UserController extends BaseController {
         if (!smsCode.equalsIgnoreCase(code)) {
             return Result.result(ResultCode.CODE_ERR);
         }
+        //验证手机号是否与别的账号绑定
+        User userByPhone = userService.getUserByPhone(newPhone);
+        if(null != userByPhone){
+            return Result.result(ResultCode.PHONE_IS_BINGED);
+        }
+
         Boolean bool=userService.changePhone(getSession(),newPhone);
         if (bool) {
             return Result.success();

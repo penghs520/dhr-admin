@@ -1,6 +1,7 @@
 package com.qinjee.admin.model;
 
 public enum ResultCode {
+
     SUCCESS(200, "操作成功！"),
     FAIL(500, "操作失败！"),
     INVALID_SESSION(501, "登录超时或未登录！"),
@@ -17,10 +18,12 @@ public enum ResultCode {
     CODE_ERR(500, "验证码错误！"),
     PASSWORD_ERR(500, "密码错误！"),
     ACCOUNT_NOT_EXSIT(500, "账号不存在！"),
-
-
+    PHONE_IS_BINGED(500, "手机号已绑定其他账号！"),
     ;
-
+    ResultCode(Integer code, String message) {
+        this.code = code;
+        this.message = message;
+    }
     private Integer code;
     private String message;
 
@@ -32,9 +35,6 @@ public enum ResultCode {
         return message;
     }
 
-    ResultCode(Integer code, String message) {
-        this.code = code;
-        this.message = message;
-    }
+
 
 }

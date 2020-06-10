@@ -22,6 +22,8 @@ public interface ICompanyInfoService {
 
     CompanyInfoVo getInfo(Integer companyId);
 
+    CompanyInfoVo getById(Integer companyId);
+
     Boolean authenticate(Integer companyId, Integer authStatus,Integer operatorId);
 
     Boolean addFollower(CompanyFollowerAo companyFollowerAo);

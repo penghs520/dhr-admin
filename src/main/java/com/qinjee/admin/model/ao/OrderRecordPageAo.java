@@ -40,16 +40,16 @@ public class OrderRecordPageAo implements Serializable {
         @ApiModelProperty(value = "支付方式,0：支付宝，1：微信，2：银行卡",example = "0")
         private String payType;//支付方式 0：支付宝，1：微信，2：银行卡
 
-        @ApiModelProperty(value = "总金额1")
+        @ApiModelProperty(value = "总金额1",example = "0.1")
         private String totalPrice_1;
 
-        @ApiModelProperty(value = "总金额2")
+        @ApiModelProperty(value = "总金额2",example = "0.1")
         private String totalPrice_2;
 
-        @ApiModelProperty(value = "开票状态")
+        @ApiModelProperty(value = "开票状态",example = "0")
         private String ticketOpenStatus;
 
-        @ApiModelProperty(value = "发票寄送状态")
+        @ApiModelProperty(value = "发票寄送状态",example = "0")
         private String ticketSendStatus;
 
         @ApiModelProperty(value = "开票时间1")

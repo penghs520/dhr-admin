@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Configuration
+@Profile({"dev", "test", "prod"})
 public class RedisClusterConfig {
 
     @Value("${spring.redis.cluster.nodes}")

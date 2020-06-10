@@ -41,12 +41,18 @@ public class CompanyController extends BaseController {
     @ApiOperation(value = "认证")
     @GetMapping(value = "/authenticate")
     public Result authenticate(Integer companyId, Integer authStatus) {
-        UserSession session = getSession();
-        Boolean bool=companyInfoService.authenticate(companyId,authStatus,session.getUserId());
-        if (bool){
-            return Result.success();
+        CompanyInfoVo info = companyInfoService.getById(companyId);
+        if(info.getAuthStatus()==1){
+            UserSession session = getSession();
+            Boolean bool=companyInfoService.authenticate(companyId,authStatus,session.getUserId());
+            if (bool){
+                return Result.success();
+            }
+            return Result.fail();
+        }else {
+            return Result.result(500,"企业未提交申请认证");
         }
-        return Result.fail();
+
     }
 
     @ApiOperation(value = "企业信息|认证进度")
@@ -65,6 +71,5 @@ public class CompanyController extends BaseController {
         }
         return Result.fail();
     }
-
 
 }
