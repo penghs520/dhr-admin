@@ -13,13 +13,9 @@ spring:
       max-redirects: 6
     timeout: 2000
     password: qinjee2019
+
 logging:
-  level:
-    com.qinjee.admin.mapper: debug
-  pattern:
-    dateformat: yyyy-MM-dd hh:mm:ss
-  file:
-    name: dhr-admin.log
+  config: classpath:log4j/log4j2_dev.xml
 
 pagehelper:
   helperDialect: mysql  #数据库

@@ -14,6 +14,8 @@ public class OrderRecordVo implements Serializable {
     private Date buyDate;
     @ApiModelProperty(notes = "发票税号")
     private String ticketNumber;//发票号码
+    @ApiModelProperty(notes = "发票id")
+    private String ticketId;//发票号码
     @ApiModelProperty(notes = "开票时间")
     private Date ticketOpenTime;
     @ApiModelProperty(notes = "开票状态 0未开票 1已开票")

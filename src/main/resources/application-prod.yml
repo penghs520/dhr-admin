@@ -3,19 +3,21 @@ server:
 spring:
   datasource:
     # mysql 8.0 数据库配置
-    url: jdbc:mysql://193.112.188.180:3306/masterdata_test?serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf8&allowMultiQueries=true
+    url: jdbc:mysql:// 134.175.71.45:3306/masterdata_prod?serverTimezone=GMT%2B8&useSSL=false&characterEncoding=utf8&allowMultiQueries=true
     username: qinjee_test
     password: qinjee2019
     driver-class-name: com.mysql.cj.jdbc.Driver
   redis:
     cluster:
-      nodes: 193.112.188.180:7001,193.112.188.180:7002,193.112.188.180:7003,193.112.188.180:7004,193.112.188.180:7005,193.112.188.180:7006
+      nodes: 134.175.71.45:7001,134.175.71.45:7002,134.175.71.45:7003,134.175.71.45:7004,134.175.71.45:7005,134.175.71.45:7006
       max-redirects: 6
     timeout: 2000
     password: qinjee2019
-
 logging:
-  config: classpath:log4j/log4j2_test.xml
+  config: classpath:log4j/log4j2_prod.xml
+  level:
+    com.qinjee.admin: debug
+
 
 pagehelper:
   helperDialect: mysql  #数据库

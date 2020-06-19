@@ -6,8 +6,10 @@ import com.qinjee.admin.mapper.OrderRecordMapper;
 import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.ao.OrderRecordPageAo;
 import com.qinjee.admin.model.vo.OrderRecordVo;
+import com.qinjee.admin.model.vo.TicketInfo;
 import com.qinjee.admin.service.OrderRecordService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,7 +29,28 @@ public class OrderRecordServiceImpl implements OrderRecordService {
         PageResult<OrderRecordVo> pageResult = new PageResult<>();
         pageResult.setTotal(pageInfo.getTotal());
         pageResult.setList(orderRecordVos);
-
         return pageResult;
     }
+
+    @Override
+    public Boolean opneTicket(Integer[] ticketIds) {
+        int i=orderRecordMapper.opneTicket(ticketIds);
+        if(i==ticketIds.length){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @Transactional
+    public Boolean sendTicket(Integer ticketId, String expressNumber) {
+        int i=orderRecordMapper.sendTicket(ticketId,expressNumber);
+        if(i>0){
+            //TODO 公众号通知
+            return true;
+        }
+        return false;
+    }
+
+
 }

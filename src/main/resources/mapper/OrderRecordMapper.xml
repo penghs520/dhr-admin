@@ -13,6 +13,7 @@
         <result column="buy_user_name" property="buyUserName"></result>
         <result column="phone" property="phone"></result>
         <result column="ticket_open_time" property="ticketOpenTime"></result>
+        <result column="ticket_id" property="ticketId"></result>
         <result column="ticket_open_status" property="ticketOpenStatus"></result>
         <result column="ticket_number" property="ticketNumber"></result>
         <result column="express_number" property="expressNumber"></result>
@@ -21,6 +22,7 @@
         <association property="ticketInfo" javaType="com.qinjee.admin.model.vo.TicketInfo">
             <result column="ticket_open_status" property="ticketOpenStatus"></result>
             <result column="ticket_open_time" property="ticketOpenTime"></result>
+            <result column="ticket_id" property="ticketId"></result>
             <result column="ticket_number" property="ticketNumber"></result>
             <result column="ticket_type" property="ticketType"></result>
             <result column="total_price" property="ticketPrice"></result>
@@ -30,6 +32,7 @@
             <result column="contact_person_name" property="contactPersonName"></result>
             <result column="ticket_company_name" property="ticketCompanyName"></result>
             <result column="contact_phone" property="contactPhone"></result>
+            <result column="apply_time" property="applyTime"></result>
         </association>
 
         <association property="ticketSendInfo" javaType="com.qinjee.admin.model.vo.TicketSendInfo">
@@ -41,13 +44,29 @@
         </association>
 
     </resultMap>
+    <update id="opneTicket">
+        <if test="ticketIds != null and ticketIds.length >0">
+            update t_ticket set ticket_status = 2
+            where ticket_id in
+            <foreach collection="ticketIds" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
 
 
-   <select id="selectPage" resultMap="orderTicketMap">
+    </update>
+    <update id="sendTicket">
+        update t_ticket set express_number =#{expressNumber}
+         where ticket_id =#{ticketId}
+    </update>
+
+
+    <select id="selectPage" resultMap="orderTicketMap">
        SELECT tc.company_name,order_number,good_name,total_price,pay_type,buy_date,go.operator_id buy_user_id,
        tua.user_name buy_user_name,tua.phone,
-       CASE   WHEN ti.ticket_id IS NULL THEN 0 ELSE 1 END ticket_open_status,
+       ti.ticket_status ticket_open_status,
        ti.create_time ticket_open_time,
+       ti.ticket_id,ti.apply_time,
        ti.express_number,
        ti.ticket_number,
        ti.ticket_type,
@@ -66,6 +85,11 @@
        LEFT JOIN t_ticket ti ON ti.ticket_id =go.ticket_id
        LEFT JOIN t_user_archive tua on go.operator_id = tua.archive_id
        <where>
+            <if test="operation == true">
+                and ti.ticket_status != 0
+                and ( ti.express_number IS  NULL )
+            </if>
+
            <if test="query != null">
                <if test="query.companyName != null ">
                    <choose>
@@ -74,6 +98,17 @@
                        </when>
                        <otherwise>
                            and tc.company_name like concat('%',#{query.companyName},'%')
+                       </otherwise>
+                   </choose>
+               </if>
+
+               <if test="query.goodName != null ">
+                   <choose>
+                       <when test="query.goodName == ''">
+                           and (good_name = '' or  good_name is null)
+                       </when>
+                       <otherwise>
+                           and (good_name like concat('%',#{query.goodName},'%') or order_number like concat('%',#{query.goodName},'%'))
                        </otherwise>
                    </choose>
                </if>
@@ -94,7 +129,7 @@
                            and (buy_date = '' or and buy_date is null)
                        </when>
                        <otherwise>
-                           and #{query.buyDate_1} >= buy_date
+                           and #{query.buyDate_2} >= buy_date
                        </otherwise>
                    </choose>
                </if>
@@ -124,7 +159,7 @@
                            and (order_number = '' or  order_number is null)
                        </when>
                        <otherwise>
-                           and order_number =#{query.orderNumber}
+                           and order_number like concat('%',#{query.orderNumber},'%')
                        </otherwise>
                    </choose>
 
@@ -146,7 +181,7 @@
                            and (tua.phone = '' or  tua.phone is null)
                        </when>
                        <otherwise>
-                           and tua.phone = #{query.phone}
+                           and tua.phone like concat('%',#{query.phone},'%')
                        </otherwise>
                    </choose>
 
@@ -162,31 +197,31 @@
                    </choose>
 
                </if>
-               <if test="query.ticketOpenDate_1 != null ">
+               <if test="query.ticketOpenTime_1 != null ">
                    <choose>
-                       <when test="query.ticketOpenDate_1 == ''">
+                       <when test="query.ticketOpenTime_1 == ''">
                            and (ti.create_time = '' or  ti.create_time is null)
                        </when>
                        <otherwise>
-                           and ti.create_time >= #{query.ticketOpenDate_1}
+                           and ti.create_time >= #{query.ticketOpenTime_1}
                        </otherwise>
                    </choose>
 
                </if>
-               <if test="query.ticketOpenDate_2 != null">
+               <if test="query.ticketOpenTime_2 != null">
                    <choose>
-                       <when test="query.ticketOpenDate_2 == ''">
+                       <when test="query.ticketOpenTime_2 == ''">
                            and (ti.create_time = '' or  ti.create_time is null)
                        </when>
                        <otherwise>
-                           and  #{query.ticketOpenDate_1} >= ti.create_time
+                           and  #{query.ticketOpenTime_2} >= ti.create_time
                        </otherwise>
                    </choose>
 
                </if>
                <if test="query.ticketOpenStatus != null  ">
                    <choose>
-                       <when test="query.companyName == ''">
+                       <when test="query.ticketOpenStatus == ''">
                            and ti.ticket_id IS  NULL
                        </when>
                        <otherwise>
@@ -199,7 +234,7 @@
                </if>
                <if test="query.ticketSendStatus != null ">
                    <choose>
-                       <when test="query.companyName == ''">
+                       <when test="query.ticketSendStatus == ''">
                            and ti.express_number is null
                        </when>
                        <otherwise>
@@ -210,24 +245,13 @@
                    </choose>
 
                </if>
-               <if test="query.totalPrice_1 != null">
+               <if test="query.totalPrice != null">
                    <choose>
-                       <when test="query.totalPrice_1 == ''">
+                       <when test="query.totalPrice == ''">
                            and ( total_price = '' or  total_price is null)
                        </when>
                        <otherwise>
-                           and total_price >= #{query.totalPrice_2}
-                       </otherwise>
-                   </choose>
-
-               </if>
-               <if test="query.totalPrice_2 != null">
-                   <choose>
-                       <when test="query.totalPrice_2 == ''">
-                           and (total_price = '' or total_price is null)
-                       </when>
-                       <otherwise>
-                           and #{query.totalPrice_2} >= total_price
+                           and total_price >= #{query.totalPrice}
                        </otherwise>
                    </choose>
 
@@ -235,6 +259,7 @@
 
            </if>
        </where>
-
+    group by go.order_id
+    order by go.buy_date desc
    </select>
 </mapper>

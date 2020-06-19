@@ -5,6 +5,7 @@ import com.qinjee.admin.model.PageResult;
 import com.qinjee.admin.model.Result;
 import com.qinjee.admin.model.ao.OrderRecordPageAo;
 import com.qinjee.admin.model.vo.OrderRecordVo;
+import com.qinjee.admin.model.vo.TicketInfo;
 import com.qinjee.admin.service.OrderRecordService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -34,15 +35,27 @@ public class OrderController {
 
         return Result.success(list);
     }
+
+
     @ApiOperation(value = "寄送发票")
     @GetMapping(value = "/sendTicket")
     public Result sendTicket(Integer ticketId,String expressNumber){
-        return null;
+        Boolean bool=orderRecordService.sendTicket(ticketId,expressNumber);
+        if (bool){
+            return Result.success();
+        }
+        return Result.fail();
     }
+
+
     @ApiOperation(value = "确认开票")
     @PostMapping(value = "/opneTicket")
-    public Result opneTicket(@RequestBody Integer[] ticketId){
-        return null;
+    public Result opneTicket(@RequestBody Integer[] ticketIds){
+        Boolean bool=orderRecordService.opneTicket(ticketIds);
+        if (bool){
+            return Result.success();
+        }
+        return Result.fail();
     }
 
 }

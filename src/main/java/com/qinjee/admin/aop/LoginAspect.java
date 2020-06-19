@@ -34,7 +34,9 @@ public class LoginAspect {
     public void afterReturin(JoinPoint joinPoint, Object returnVal) {
         String className = joinPoint.getTarget().getClass().getName();
         String methodName = joinPoint.getSignature().getName();
-        log.info(className + "的" + methodName + "结果为：" + returnVal.toString());
+        if(returnVal!=null){
+            log.info(className + "的" + methodName + "结果为：" + returnVal.toString());
+        }
     }
 
 }

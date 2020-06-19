@@ -31,4 +31,6 @@ public interface CompanyMapper {
     int deleteFollower(@Param("companyIds") List<Integer> companyIds);
 
     int addFollower(Integer companyId, Integer followerId);
+
+    int getArchiveCount(Integer companyId);
 }

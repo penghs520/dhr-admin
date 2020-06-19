@@ -22,7 +22,7 @@ public class BaseController {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
-                if ("SESSION_KEY".equals(cookies[i].getName())) {
+                if ("DHR_ADMIN_SESSION_KEY".equals(cookies[i].getName())) {
                     userSession = new UserSession();
                     JSONObject jsonObject = JSON.parseObject(redisClusterService.get(cookies[i].getValue()));
                     if(null==jsonObject){

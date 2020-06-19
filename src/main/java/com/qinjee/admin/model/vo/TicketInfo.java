@@ -10,6 +10,8 @@ import java.util.Date;
 public class TicketInfo implements Serializable {
     @ApiModelProperty(notes = "发票类型 0 1")
     private Integer ticketType;
+    @ApiModelProperty(notes = "发票id")
+    private String ticketId;//发票号码
     @ApiModelProperty(notes = "发票金额")
     private Double ticketPrice;
     @ApiModelProperty(notes = "开票状态")
@@ -30,4 +32,6 @@ public class TicketInfo implements Serializable {
     private String ticketAddress;
     @ApiModelProperty(notes = "开票时间")
     private Date ticketOpenTime;
+    @ApiModelProperty(notes = "发票申请时间")
+    private Date applyTime;
 }

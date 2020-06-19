@@ -86,7 +86,7 @@ public class UserServiceImpl implements IUserService {
         int i = userMapper.deleteById(userId);
         //移除session
         StringBuffer loginKey = new StringBuffer();
-        loginKey.append("SESSION_KEY").append("_").append(userId);
+        loginKey.append("DHR_ADMIN_SESSION_KEY").append("_").append(userId);
         redisClusterService.del(loginKey.toString());
         if(i>0){
             return true;

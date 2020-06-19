@@ -63,10 +63,10 @@ public class LoginContoller {
 
     private void saveSession(HttpServletResponse response, User user) {
         StringBuffer loginKey = new StringBuffer();
-        loginKey.append("SESSION_KEY").append("_").append(user.getUserId());
+        loginKey.append("DHR_ADMIN_SESSION_KEY").append("_").append(user.getUserId());
         //设置redis登录缓存时间，120分钟过期，与前端保持一致
         redisClusterService.setex(loginKey.toString(), SystemConstants.SESSION_TIME_OUT, JSON.toJSONString(user));
-        Cookie cookie = new Cookie("SESSION_KEY", loginKey.toString());
+        Cookie cookie = new Cookie("DHR_ADMIN_SESSION_KEY", loginKey.toString());
         cookie.setMaxAge(SystemConstants.SESSION_TIME_OUT);
         cookie.setPath("/");
         response.addCookie(cookie);
@@ -108,7 +108,7 @@ public class LoginContoller {
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
             for (int i = 0; i < cookies.length; i++) {
-                if ("SESSION_KEY".equals(cookies[i].getName())) {
+                if ("DHR_ADMIN_SESSION_KEY".equals(cookies[i].getName())) {
                     loginKey = cookies[i].getValue();
                     if (loginKey == null) {
                         return Result.fail("登出失败");

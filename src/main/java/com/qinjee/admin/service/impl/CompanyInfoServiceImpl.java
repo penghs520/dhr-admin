@@ -51,6 +51,12 @@ public class CompanyInfoServiceImpl implements ICompanyInfoService {
         PageInfo<CompanyListVo> pageInfo = new PageInfo<>(companyListVos);
         PageResult<CompanyListVo> pageResult = new PageResult<>();
         pageResult.setTotal(pageInfo.getTotal());
+        //TODO 暂时用笨方式
+        for (CompanyListVo vo : companyListVos) {
+            int count = companyMapper.getArchiveCount(vo.getCompanyId());
+            vo.setStaffCount(count);
+        }
+
         pageResult.setList(companyListVos);
         return pageResult;
     }
@@ -119,7 +125,7 @@ public class CompanyInfoServiceImpl implements ICompanyInfoService {
                 int j = companyMapper.addFollower(companyId, followerId);
             }
         }
-        return i > 0 ? true : false;
+        return true;
     }
 
 }

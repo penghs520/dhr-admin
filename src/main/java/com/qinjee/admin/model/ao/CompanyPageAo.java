@@ -23,9 +23,15 @@ public class CompanyPageAo implements Serializable {
         @ApiModelProperty(notes = "企业名称")
         private String companyName;
 
+        @ApiModelProperty(notes = "手机号")
+        private String registUserPhone;
+
+        @ApiModelProperty(notes = "跟进人姓名")
+        private String followUserName;
 
         @ApiModelProperty(notes = "创建时间1")
         private String createTime_1;
+
 
         @ApiModelProperty(notes = "创建时间2")
         private String createTime_2;
